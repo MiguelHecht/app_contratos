@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Contrato - Curso Albert</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; padding-bottom: 50px; }
+        .card { border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .header-bg { background-color: #0d6efd; color: white; padding: 20px; border-radius: 10px 10px 0 0; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4" style="max-width: 900px;">
+        <div class="card">
+            <div class="header-bg text-center">
+                <h3>Gerador de Contrato de Matrícula</h3>
+                <p class="mb-0">Curso Albert - Ano Letivo 2026</p>
+            </div>
+            <div class="card-body p-4">
+                <form action="/gerar-contrato/" method="post">
+                    
+                    <!-- DADOS DO CONTRATANTE -->
+                    <h5 class="text-primary border-bottom pb-2 mb-3">1. Dados do Responsável (Contratante)</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-8">
+                            <label class="form-label">Nome Completo:</label>
+                            <input type="text" name="nome_contratante" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">CPF:</label>
+                            <input type="text" name="cpf_contratante" class="form-control" placeholder="000.000.000-00" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Data Nasc.:</label>
+                            <input type="text" name="nascimento_contratante" class="form-control" placeholder="DD/MM/AAAA">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Estado Civil:</label>
+                            <input type="text" name="estado_civil" class="form-control" placeholder="ex: Solteiro(a)">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Profissão:</label>
+                            <input type="text" name="profissao" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">E-mail:</label>
+                            <input type="email" name="email_contratante" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Telefone(s):</label>
+                            <input type="text" name="telefone_contratante" class="form-control">
+                        </div>
+                        <div class="col-md-9">
+                            <label class="form-label">Endereço Completo:</label>
+                            <input type="text" name="endereco" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">CEP:</label>
+                            <input type="text" name="cep" class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- DADOS DO ALUNO -->
+                    <h5 class="text-primary border-bottom pb-2 mb-3">2. Dados do Aluno</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-8">
+                            <label class="form-label">Nome Completo do Aluno:</label>
+                            <input type="text" name="nome_aluno" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Data Nasc. Aluno:</label>
+                            <input type="text" name="nascimento_aluno" class="form-control" placeholder="DD/MM/AAAA">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Telefone Aluno:</label>
+                            <input type="text" name="telefone_aluno" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">E-mail Aluno:</label>
+                            <input type="email" name="email_aluno" class="form-control">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label">Escola:</label>
+                            <input type="text" name="escola" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Série:</label>
+                            <input type="text" name="serie" class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- VIGÊNCIA -->
+                    <h5 class="text-primary border-bottom pb-2 mb-3">3. Vigência do Contrato</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <label class="form-label">Mês Início:</label>
+                            <input type="text" name="mes_inicio" class="form-control" placeholder="ex: abril">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Ano Início:</label>
+                            <input type="text" name="ano_inicio" class="form-control" value="2026">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Mês Fim:</label>
+                            <input type="text" name="mes_fim" class="form-control" placeholder="ex: novembro">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Ano Fim:</label>
+                            <input type="text" name="ano_fim" class="form-control" value="2026">
+                        </div>
+                    </div>
+
+                    <!-- PLANO E PAGAMENTO -->
+                    <h5 class="text-primary border-bottom pb-2 mb-3">4. Pacote e Pagamento</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-12">
+                            <label class="form-label">Descrição do Pacote Escolhido:</label>
+                            <input type="text" name="descricao_pacote" class="form-control" placeholder="ex: Pacote Essencial com desconto para aluno IESE" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Forma de Pagamento:</label>
+                            <input type="text" name="forma_pagamento" class="form-control" placeholder="ex: Credito" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Valor Total (R$):</label>
+                            <input type="text" name="valor_total" class="form-control" placeholder="2.256,00" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Nº de Parcelas:</label>
+                            <input type="text" name="num_parcelas" class="form-control" placeholder="12 (doze)">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Valor da Parcela (R$):</label>
+                            <input type="text" name="valor_parcela" class="form-control" placeholder="188,00">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Data 1ª Parcela:</label>
+                            <input type="text" name="data_primeira_parcela" class="form-control" placeholder="10/04/2026">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Data Última Parcela:</label>
+                            <input type="text" name="data_ultima_parcela" class="form-control" placeholder="10/04/2027">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Detalhe da Isenção/Observação Final:</label>
+                            <input type="text" name="detalhe_isencao" class="form-control" placeholder="ex: com isenção da taxa de matrícula">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">Gerar e Baixar Contrato (.docx)</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
