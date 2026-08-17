@@ -9,6 +9,7 @@
         body { background-color: #f8f9fa; padding-bottom: 50px; }
         .card { border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .header-bg { background-color: #0d6efd; color: white; padding: 20px; border-radius: 10px 10px 0 0; }
+        .secao-titulo { color: #0d6efd; border-bottom: 2px solid #e9ecef; padding-bottom: 5px; margin-bottom: 15px; margin-top: 25px; }
     </style>
 </head>
 <body>
@@ -22,8 +23,8 @@
                 <form action="/gerar-contrato/" method="post">
                     
                     <!-- DADOS DO CONTRATANTE -->
-                    <h5 class="text-primary border-bottom pb-2 mb-3">1. Dados do Responsável (Contratante)</h5>
-                    <div class="row g-3 mb-4">
+                    <h5 class="secao-titulo">1. Dados do Responsável (Contratante)</h5>
+                    <div class="row g-3">
                         <div class="col-md-8">
                             <label class="form-label">Nome Completo:</label>
                             <input type="text" name="nome_contratante" class="form-control" required>
@@ -38,7 +39,13 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Estado Civil:</label>
-                            <input type="text" name="estado_civil" class="form-control" placeholder="ex: Solteiro(a)">
+                            <select name="estado_civil" class="form-select">
+                                <option value="Solteiro(a)">Solteiro(a)</option>
+                                <option value="Casado(a)">Casado(a)</option>
+                                <option value="Divorciado(a)">Divorciado(a)</option>
+                                <option value="Viúvo(a)">Viúvo(a)</option>
+                                <option value="União Estável">União Estável</option>
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Profissão:</label>
@@ -63,8 +70,8 @@
                     </div>
 
                     <!-- DADOS DO ALUNO -->
-                    <h5 class="text-primary border-bottom pb-2 mb-3">2. Dados do Aluno</h5>
-                    <div class="row g-3 mb-4">
+                    <h5 class="secao-titulo">2. Dados do Aluno</h5>
+                    <div class="row g-3">
                         <div class="col-md-8">
                             <label class="form-label">Nome Completo do Aluno:</label>
                             <input type="text" name="nome_aluno" class="form-control" required>
@@ -92,11 +99,24 @@
                     </div>
 
                     <!-- VIGÊNCIA -->
-                    <h5 class="text-primary border-bottom pb-2 mb-3">3. Vigência do Contrato</h5>
-                    <div class="row g-3 mb-4">
+                    <h5 class="secao-titulo">3. Vigência do Contrato</h5>
+                    <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Mês Início:</label>
-                            <input type="text" name="mes_inicio" class="form-control" placeholder="ex: abril">
+                            <select name="mes_inicio" class="form-select">
+                                <option value="janeiro">Janeiro</option>
+                                <option value="fevereiro">Fevereiro</option>
+                                <option value="março">Março</option>
+                                <option value="abril" selected>Abril</option>
+                                <option value="maio">Maio</option>
+                                <option value="junho">Junho</option>
+                                <option value="julho">Julho</option>
+                                <option value="agosto">Agosto</option>
+                                <option value="setembro">Setembro</option>
+                                <option value="outubro">Outubro</option>
+                                <option value="novembro">Novembro</option>
+                                <option value="dezembro">Dezembro</option>
+                            </select>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Ano Início:</label>
@@ -104,7 +124,20 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Mês Fim:</label>
-                            <input type="text" name="mes_fim" class="form-control" placeholder="ex: novembro">
+                            <select name="mes_fim" class="form-select">
+                                <option value="janeiro">Janeiro</option>
+                                <option value="fevereiro">Fevereiro</option>
+                                <option value="março">Março</option>
+                                <option value="abril">Abril</option>
+                                <option value="maio">Maio</option>
+                                <option value="junho">Junho</option>
+                                <option value="julho">Julho</option>
+                                <option value="agosto">Agosto</option>
+                                <option value="setembro">Setembro</option>
+                                <option value="outubro">Outubro</option>
+                                <option value="novembro" selected>Novembro</option>
+                                <option value="dezembro">Dezembro</option>
+                            </select>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Ano Fim:</label>
@@ -113,39 +146,61 @@
                     </div>
 
                     <!-- PLANO E PAGAMENTO -->
-                    <h5 class="text-primary border-bottom pb-2 mb-3">4. Pacote e Pagamento</h5>
-                    <div class="row g-3 mb-4">
+                    <h5 class="secao-titulo">4. Pacote e Pagamento</h5>
+                    <div class="row g-3">
                         <div class="col-md-12">
                             <label class="form-label">Descrição do Pacote Escolhido:</label>
                             <input type="text" name="descricao_pacote" class="form-control" placeholder="ex: Pacote Essencial com desconto para aluno IESE" required>
                         </div>
+
+                        <!-- Forma de Pagamento (Menu Seleção) -->
                         <div class="col-md-6">
-                            <label class="form-label">Forma de Pagamento:</label>
-                            <input type="text" name="forma_pagamento" class="form-control" placeholder="ex: Credito" required>
+                            <label class="form-label">Tipo de Pagamento:</label>
+                            <select id="tipo_pagamento" class="form-select" onchange="atualizarPagamento()">
+                                <option value="credito">Cartão de Crédito (12x)</option>
+                                <option value="recorrencia">Recorrência (12x)</option>
+                                <option value="boleto">Boleto Bancário (12x)</option>
+                                <option value="vista">À Vista (PIX / Dinheiro)</option>
+                            </select>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Valor Total (R$):</label>
-                            <input type="text" name="valor_total" class="form-control" placeholder="2.256,00" required>
+
+                        <!-- Isenção de Matrícula (Menu Seleção) -->
+                        <div class="col-md-6">
+                            <label class="form-label">Isenção da Taxa de Matrícula?</label>
+                            <select id="isencao_select" class="form-select" onchange="atualizarPagamento()">
+                                <option value="sim">Sim (com isenção da taxa de matrícula)</option>
+                                <option value="nao">Não (sem isenção)</option>
+                            </select>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Nº de Parcelas:</label>
-                            <input type="text" name="num_parcelas" class="form-control" placeholder="12 (doze)">
+
+                        <!-- Valor Total -->
+                        <div class="col-md-6">
+                            <label class="form-label">Valor Total do Curso (R$):</label>
+                            <input type="text" id="valor_total_input" name="valor_total" class="form-control" placeholder="2.256,00" oninput="atualizarPagamento()" required>
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Valor da Parcela (R$):</label>
-                            <input type="text" name="valor_parcela" class="form-control" placeholder="188,00">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Data 1ª Parcela:</label>
-                            <input type="text" name="data_primeira_parcela" class="form-control" placeholder="10/04/2026">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Data Última Parcela:</label>
-                            <input type="text" name="data_ultima_parcela" class="form-control" placeholder="10/04/2027">
-                        </div>
-                        <div class="col-md-12">
-                            <label class="form-label">Detalhe da Isenção/Observação Final:</label>
-                            <input type="text" name="detalhe_isencao" class="form-control" placeholder="ex: com isenção da taxa de matrícula">
+
+                        <!-- Campos ocultos enviados para o backend -->
+                        <input type="hidden" id="forma_pagamento_hidden" name="forma_pagamento">
+                        <input type="hidden" id="detalhe_isencao_hidden" name="detalhe_isencao">
+
+                        <!-- Campos calculados dinamicamente (Área de Parcelamento) -->
+                        <div id="area_parcelas" class="row g-3 mt-1">
+                            <div class="col-md-3">
+                                <label class="form-label">Nº de Parcelas:</label>
+                                <input type="text" id="num_parcelas" name="num_parcelas" class="form-control" value="12 (doze)">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Valor da Parcela (R$):</label>
+                                <input type="text" id="valor_parcela" name="valor_parcela" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">1ª Parcela (Início):</label>
+                                <input type="text" id="data_primeira_parcela" name="data_primeira_parcela" class="form-control" onchange="calcularUltimaParcela()">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Última Parcela (Fim):</label>
+                                <input type="text" id="data_ultima_parcela" name="data_ultima_parcela" class="form-control">
+                            </div>
                         </div>
                     </div>
 
@@ -156,5 +211,101 @@
             </div>
         </div>
     </div>
+
+    <!-- LÓGICA DE CÁLCULO E DATAS AUTOMÁTICAS -->
+    <script>
+        // Função auxiliar para formatar objeto Date em DD/MM/AAAA
+        function formatarDataBR(data) {
+            let dia = String(data.getDate()).padStart(2, '0');
+            let mes = String(data.getMonth() + 1).padStart(2, '0');
+            let ano = data.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        // Converte string DD/MM/AAAA para Objeto Date
+        function parseDataBR(strData) {
+            let partes = strData.split('/');
+            if (partes.length === 3) {
+                return new Date(partes[2], partes[1] - 1, partes[0]);
+            }
+            return new Date();
+        }
+
+        // Calcula a última parcela (+11 meses da primeira)
+        function calcularUltimaParcela() {
+            let campoPrimeira = document.getElementById('data_primeira_parcela').value;
+            if (campoPrimeira && campoPrimeira !== '-') {
+                let dtPrimeira = parseDataBR(campoPrimeira);
+                // Adiciona 11 meses para totalizar 12 parcelas (mês 1 ao mês 12)
+                let dtUltima = new Date(dtPrimeira.getFullYear(), dtPrimeira.getMonth() + 11, dtPrimeira.getDate());
+                document.getElementById('data_ultima_parcela').value = formatarDataBR(dtUltima);
+            }
+        }
+
+        function atualizarPagamento() {
+            const tipo = document.getElementById('tipo_pagamento').value;
+            const isencao = document.getElementById('isencao_select').value;
+            const valorTotalStr = document.getElementById('valor_total_input').value;
+            
+            const areaParcelas = document.getElementById('area_parcelas');
+            const formaPagamentoHidden = document.getElementById('forma_pagamento_hidden');
+            const detalheIsencaoHidden = document.getElementById('detalhe_isencao_hidden');
+            const valorParcelaInput = document.getElementById('valor_parcela');
+            const numParcelasInput = document.getElementById('num_parcelas');
+
+            // 1. Atualiza o texto da Isenção
+            if (isencao === 'sim') {
+                detalheIsencaoHidden.value = 'com isenção da taxa de matrícula';
+            } else {
+                detalheIsencaoHidden.value = 'sem isenção da taxa de matrícula';
+            }
+
+            // 2. Se for À VISTA
+            if (tipo === 'vista') {
+                areaParcelas.style.display = 'none';
+                formaPagamentoHidden.value = 'à vista';
+                numParcelasInput.value = '1 (uma)';
+                valorParcelaInput.value = valorTotalStr;
+                document.getElementById('data_primeira_parcela').value = '-';
+                document.getElementById('data_ultima_parcela').value = '-';
+                return;
+            }
+
+            // 3. Se for PARCELADO
+            areaParcelas.style.display = 'flex';
+            numParcelasInput.value = '12 (doze)';
+
+            if (tipo === 'credito') {
+                formaPagamentoHidden.value = 'parcelado em 12 (doze) vezes no cartão de crédito';
+            } else if (tipo === 'recorrencia') {
+                formaPagamentoHidden.value = 'parcelado em 12 (doze) vezes via recorrência cartão';
+            } else if (tipo === 'boleto') {
+                formaPagamentoHidden.value = 'parcelado em 12 (doze) vezes no boleto bancário';
+            }
+
+            // 4. Preenchimento Automático das Datas de 1ª e Última Parcela
+            // Se o campo da 1ª parcela estiver vazio ou contiver '-', define como a data de HOJE
+            let campoPrimeira = document.getElementById('data_primeira_parcela');
+            if (!campoPrimeira.value || campoPrimeira.value === '-') {
+                let hoje = new Date();
+                campoPrimeira.value = formatarDataBR(hoje);
+            }
+            calcularUltimaParcela();
+
+            // 5. Cálculo do valor da parcela
+            let valorLimpo = valorTotalStr.replace(/\./g, '').replace(',', '.');
+            let valorNum = parseFloat(valorLimpo);
+
+            if (!isNaN(valorNum) && valorNum > 0) {
+                let parcela = (valorNum / 12).toFixed(2);
+                valorParcelaInput.value = parcela.replace('.', ',');
+            } else {
+                valorParcelaInput.value = '';
+            }
+        }
+
+        // Executa ao carregar a página
+        window.onload = atualizarPagamento;
+    </script>
 </body>
 </html>
