@@ -31,11 +31,11 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">CPF:</label>
-                            <input type="text" name="cpf_contratante" class="form-control" placeholder="000.000.000-00" required>
+                            <input type="text" name="cpf_contratante" class="form-control" placeholder="000.000.000-00" oninput="mascaraCPF(this)" maxlength="14" required>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Data Nasc.:</label>
-                            <input type="text" name="nascimento_contratante" class="form-control" placeholder="DD/MM/AAAA">
+                            <input type="text" name="nascimento_contratante" class="form-control" placeholder="DD/MM/AAAA" oninput="mascaraData(this)" maxlength="10">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Estado Civil:</label>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">CEP:</label>
-                            <input type="text" name="cep" class="form-control">
+                            <input type="text" name="cep" class="form-control" placeholder="00000-000" oninput="mascaraCEP(this)" maxlength="9">
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Data Nasc. Aluno:</label>
-                            <input type="text" name="nascimento_aluno" class="form-control" placeholder="DD/MM/AAAA">
+                            <input type="text" name="nascimento_aluno" class="form-control" placeholder="DD/MM/AAAA" oninput="mascaraData(this)" maxlength="10">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Telefone Aluno:</label>
@@ -103,7 +103,7 @@
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Mês Início:</label>
-                            <select name="mes_inicio" class="form-select">
+                            <select id="mes_inicio" name="mes_inicio" class="form-select" onchange="calcularVigenciaFim()">
                                 <option value="janeiro">Janeiro</option>
                                 <option value="fevereiro">Fevereiro</option>
                                 <option value="março">Março</option>
@@ -120,11 +120,11 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Ano Início:</label>
-                            <input type="text" name="ano_inicio" class="form-control" value="2026">
+                            <input type="text" id="ano_inicio" name="ano_inicio" class="form-control" value="2026" oninput="calcularVigenciaFim()">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Mês Fim:</label>
-                            <select name="mes_fim" class="form-select">
+                            <select id="mes_fim" name="mes_fim" class="form-select">
                                 <option value="janeiro">Janeiro</option>
                                 <option value="fevereiro">Fevereiro</option>
                                 <option value="março">Março</option>
@@ -135,22 +135,34 @@
                                 <option value="agosto">Agosto</option>
                                 <option value="setembro">Setembro</option>
                                 <option value="outubro">Outubro</option>
-                                <option value="novembro" selected>Novembro</option>
+                                <option value="novembro">Novembro</option>
                                 <option value="dezembro">Dezembro</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Ano Fim:</label>
-                            <input type="text" name="ano_fim" class="form-control" value="2026">
+                            <input type="text" id="ano_fim" name="ano_fim" class="form-control" value="2027">
                         </div>
                     </div>
 
                     <!-- PLANO E PAGAMENTO -->
                     <h5 class="secao-titulo">4. Pacote e Pagamento</h5>
                     <div class="row g-3">
-                        <div class="col-md-12">
-                            <label class="form-label">Descrição do Pacote Escolhido:</label>
-                            <input type="text" name="descricao_pacote" class="form-control" placeholder="ex: Pacote Essencial com desconto para aluno IESE" required>
+                        
+                        <!-- SELEÇÃO DE PACOTES -->
+                        <div class="col-md-6">
+                            <label class="form-label">Pacote Escolhido:</label>
+                            <select id="pacote_select" class="form-select" onchange="atualizarPagamento()">
+                                <option value="Pacote Essencial">Pacote Essencial</option>
+                                <option value="Pacote Intermediario">Pacote Intermediário</option>
+                                <option value="Pacote Premium">Pacote Premium</option>
+                            </select>
+                        </div>
+
+                        <!-- COMPLEMENTO DO PACOTE (OPCIONAL) -->
+                        <div class="col-md-6">
+                            <label class="form-label">Complemento (Opcional):</label>
+                            <input type="text" id="complemento_pacote" class="form-control" placeholder="ex: com desconto para aluno IESE" oninput="atualizarPagamento()">
                         </div>
 
                         <!-- Forma de Pagamento (Menu Seleção) -->
@@ -160,7 +172,7 @@
                                 <option value="credito">Cartão de Crédito (12x)</option>
                                 <option value="recorrencia">Recorrência (12x)</option>
                                 <option value="boleto">Boleto Bancário (12x)</option>
-                                <option value="vista">À Vista (PIX / Dinheiro)</option>
+                                <option value="vista">À Vista</option>
                             </select>
                         </div>
 
@@ -168,8 +180,8 @@
                         <div class="col-md-6">
                             <label class="form-label">Isenção da Taxa de Matrícula?</label>
                             <select id="isencao_select" class="form-select" onchange="atualizarPagamento()">
-                                <option value="sim">Sim (com isenção da taxa de matrícula)</option>
-                                <option value="nao">Não (sem isenção)</option>
+                                <option value="sim">Sim</option>
+                                <option value="nao">Não</option>
                             </select>
                         </div>
 
@@ -180,6 +192,7 @@
                         </div>
 
                         <!-- Campos ocultos enviados para o backend -->
+                        <input type="hidden" id="descricao_pacote_hidden" name="descricao_pacote">
                         <input type="hidden" id="forma_pagamento_hidden" name="forma_pagamento">
                         <input type="hidden" id="detalhe_isencao_hidden" name="detalhe_isencao">
 
@@ -195,11 +208,11 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">1ª Parcela (Início):</label>
-                                <input type="text" id="data_primeira_parcela" name="data_primeira_parcela" class="form-control" onchange="calcularUltimaParcela()">
+                                <input type="text" id="data_primeira_parcela" name="data_primeira_parcela" class="form-control" placeholder="DD/MM/AAAA" oninput="mascaraData(this); calcularUltimaParcela();" maxlength="10">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Última Parcela (Fim):</label>
-                                <input type="text" id="data_ultima_parcela" name="data_ultima_parcela" class="form-control">
+                                <input type="text" id="data_ultima_parcela" name="data_ultima_parcela" class="form-control" placeholder="DD/MM/AAAA" oninput="mascaraData(this)" maxlength="10">
                             </div>
                         </div>
                     </div>
@@ -212,9 +225,52 @@
         </div>
     </div>
 
-    <!-- LÓGICA DE CÁLCULO E DATAS AUTOMÁTICAS -->
+    <!-- MÁSCARAS E LÓGICA DE CÁLCULO EM JAVASCRIPT -->
     <script>
-        // Função auxiliar para formatar objeto Date em DD/MM/AAAA
+        // MÁSCARAS DE FORMATAÇÃO AUTOMÁTICA
+        function mascaraCPF(input) {
+            let v = input.value.replace(/\D/g, ""); // Remove tudo que não for dígito
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+            input.value = v;
+        }
+
+        function mascaraData(input) {
+            let v = input.value.replace(/\D/g, "");
+            v = v.replace(/(\d{2})(\d)/, "$1/$2");
+            v = v.replace(/(\d{2})(\d)/, "$1/$2");
+            input.value = v;
+        }
+
+        function mascaraCEP(input) {
+            let v = input.value.replace(/\D/g, "");
+            v = v.replace(/^(\d{5})(\d)/, "$1-$2");
+            input.value = v;
+        }
+
+        // LÓGICA DE VIGÊNCIA E PARCELAMENTO
+        const meses = [
+            "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+            "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+        ];
+
+        function calcularVigenciaFim() {
+            const mesInicioNome = document.getElementById('mes_inicio').value;
+            const anoInicioVal = parseInt(document.getElementById('ano_inicio').value);
+
+            const indexInicio = meses.indexOf(mesInicioNome.toLowerCase());
+            if (indexInicio !== -1 && !isNaN(anoInicioVal)) {
+                const indexFim = (indexInicio + 11) % 12;
+                let anoFimVal = anoInicioVal;
+                if (indexFim < indexInicio) {
+                    anoFimVal += 1;
+                }
+                document.getElementById('mes_fim').value = meses[indexFim];
+                document.getElementById('ano_fim').value = anoFimVal;
+            }
+        }
+
         function formatarDataBR(data) {
             let dia = String(data.getDate()).padStart(2, '0');
             let mes = String(data.getMonth() + 1).padStart(2, '0');
@@ -222,27 +278,38 @@
             return `${dia}/${mes}/${ano}`;
         }
 
-        // Converte string DD/MM/AAAA para Objeto Date
         function parseDataBR(strData) {
             let partes = strData.split('/');
-            if (partes.length === 3) {
+            if (partes.length === 3 && partes[2].length === 4) {
                 return new Date(partes[2], partes[1] - 1, partes[0]);
             }
-            return new Date();
+            return null;
         }
 
-        // Calcula a última parcela (+11 meses da primeira)
         function calcularUltimaParcela() {
             let campoPrimeira = document.getElementById('data_primeira_parcela').value;
             if (campoPrimeira && campoPrimeira !== '-') {
                 let dtPrimeira = parseDataBR(campoPrimeira);
-                // Adiciona 11 meses para totalizar 12 parcelas (mês 1 ao mês 12)
-                let dtUltima = new Date(dtPrimeira.getFullYear(), dtPrimeira.getMonth() + 11, dtPrimeira.getDate());
-                document.getElementById('data_ultima_parcela').value = formatarDataBR(dtUltima);
+                if (dtPrimeira) {
+                    let dtUltima = new Date(dtPrimeira.getFullYear(), dtPrimeira.getMonth() + 11, dtPrimeira.getDate());
+                    document.getElementById('data_ultima_parcela').value = formatarDataBR(dtUltima);
+                }
             }
         }
 
         function atualizarPagamento() {
+            // 1. Atualização do Pacote
+            const pacoteBase = document.getElementById('pacote_select').value;
+            const complemento = document.getElementById('complemento_pacote').value.trim();
+            const descricaoPacoteHidden = document.getElementById('descricao_pacote_hidden');
+
+            if (complemento !== "") {
+                descricaoPacoteHidden.value = `${pacoteBase} ${complemento}`;
+            } else {
+                descricaoPacoteHidden.value = pacoteBase;
+            }
+
+            // 2. Atualização das Formas de Pagamento
             const tipo = document.getElementById('tipo_pagamento').value;
             const isencao = document.getElementById('isencao_select').value;
             const valorTotalStr = document.getElementById('valor_total_input').value;
@@ -253,14 +320,12 @@
             const valorParcelaInput = document.getElementById('valor_parcela');
             const numParcelasInput = document.getElementById('num_parcelas');
 
-            // 1. Atualiza o texto da Isenção
             if (isencao === 'sim') {
                 detalheIsencaoHidden.value = 'com isenção da taxa de matrícula';
             } else {
                 detalheIsencaoHidden.value = 'sem isenção da taxa de matrícula';
             }
 
-            // 2. Se for À VISTA
             if (tipo === 'vista') {
                 areaParcelas.style.display = 'none';
                 formaPagamentoHidden.value = 'à vista';
@@ -271,7 +336,6 @@
                 return;
             }
 
-            // 3. Se for PARCELADO
             areaParcelas.style.display = 'flex';
             numParcelasInput.value = '12 (doze)';
 
@@ -283,8 +347,6 @@
                 formaPagamentoHidden.value = 'parcelado em 12 (doze) vezes no boleto bancário';
             }
 
-            // 4. Preenchimento Automático das Datas de 1ª e Última Parcela
-            // Se o campo da 1ª parcela estiver vazio ou contiver '-', define como a data de HOJE
             let campoPrimeira = document.getElementById('data_primeira_parcela');
             if (!campoPrimeira.value || campoPrimeira.value === '-') {
                 let hoje = new Date();
@@ -292,7 +354,6 @@
             }
             calcularUltimaParcela();
 
-            // 5. Cálculo do valor da parcela
             let valorLimpo = valorTotalStr.replace(/\./g, '').replace(',', '.');
             let valorNum = parseFloat(valorLimpo);
 
@@ -304,8 +365,10 @@
             }
         }
 
-        // Executa ao carregar a página
-        window.onload = atualizarPagamento;
+        window.onload = function() {
+            calcularVigenciaFim();
+            atualizarPagamento();
+        };
     </script>
 </body>
 </html>
