@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Form
 from fastapi.responses import FileResponse, HTMLResponse
 from docxtpl import DocxTemplate
+from typing import List
 import os
 import re
 
@@ -30,6 +31,9 @@ async def gerar_contrato(
     escola: str = Form(""),
     serie: str = Form(""),
     
+    tipo_curso: str = Form("preparatorio"),
+    materias: List[str] = Form([]),
+    
     mes_inicio: str = Form(""),
     ano_inicio: str = Form("2026"),
     mes_fim: str = Form(""),
@@ -42,16 +46,23 @@ async def gerar_contrato(
     valor_parcela: str = Form(""),
     data_primeira_parcela: str = Form(""),
     data_ultima_parcela: str = Form(""),
-    detalhe_isencao: str = Form("")
+    detalhe_isencao: str = Form(""),
+    dia_vencimento: str = Form("10") # Recebido dinamicamente do JS
 ):
-    nome_template = "template_contrato.docx"
+    if tipo_curso == "reforco":
+        nome_template = "template_reforco.docx"
+    else:
+        nome_template = "template_preparatorio.docx"
+
     if not os.path.exists(nome_template):
-        return {"erro": f"Arquivo '{nome_template}' não encontrado na pasta do projeto."}
+        return {"erro": f"Arquivo '{nome_template}' não encontrado no servidor."}
 
     doc = DocxTemplate(nome_template)
 
-    # Identifica se é parcelado ou à vista
     eh_parcelado = (forma_pagamento != "à vista")
+    eh_reforco = (tipo_curso == "reforco")
+
+    str_materias = ", ".join(materias) if (eh_reforco and materias) else "Nenhuma matéria selecionada"
 
     contexto = {
         'nome_contratante': nome_contratante,
@@ -71,6 +82,10 @@ async def gerar_contrato(
         'escola': escola,
         'serie': serie,
         
+        'eh_reforco': eh_reforco,
+        'materias': str_materias,
+        'tipo_curso': "Reforço Escolar" if eh_reforco else "Curso Preparatório",
+        
         'mes_inicio': mes_inicio,
         'ano_inicio': ano_inicio,
         'mes_fim': mes_fim,
@@ -84,15 +99,17 @@ async def gerar_contrato(
         'data_primeira_parcela': data_primeira_parcela,
         'data_ultima_parcela': data_ultima_parcela,
         'detalhe_isencao': detalhe_isencao,
+        'dia_vencimento': dia_vencimento,
         
-        # Variável booleana para ativar/desativar o trecho no Word
         'eh_parcelado': eh_parcelado
     }
 
     doc.render(contexto)
 
     nome_limpo = re.sub(r'[^\w\s-]', '', nome_aluno).strip().replace(' ', '_')
-    arquivo_saida = f"Contrato_{nome_limpo}.docx"
+    prefixo = "Contrato_Reforco" if eh_reforco else "Contrato_Preparatorio"
+    arquivo_saida = f"{prefixo}_{nome_limpo}.docx"
+    
     doc.save(arquivo_saida)
 
     return FileResponse(

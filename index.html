@@ -104,8 +104,17 @@
                     <h5 class="secao-titulo">3. Pacote e Pagamento</h5>
                     <div class="row g-3">
                         
-                        <!-- SELEÇÃO DE PACOTES -->
+                        <!-- SELEÇÃO DO TIPO DE CURSO -->
                         <div class="col-md-6">
+                            <label class="form-label fw-bold text-primary">Tipo de Curso:</label>
+                            <select id="tipo_curso_select" name="tipo_curso" class="form-select border-primary" onchange="alternarTipoCurso()">
+                                <option value="preparatorio" selected>Curso Preparatório</option>
+                                <option value="reforco">Reforço Escolar</option>
+                            </select>
+                        </div>
+
+                        <!-- SELEÇÃO DE PACOTES (VISÍVEL APENAS PARA PREPARATÓRIO) -->
+                        <div class="col-md-6" id="area_pacotes">
                             <label class="form-label">Pacote Escolhido:</label>
                             <select id="pacote_select" class="form-select" onchange="atualizarPagamento()">
                                 <option value="Pacote Essencial">Pacote Essencial</option>
@@ -114,14 +123,81 @@
                             </select>
                         </div>
 
-                        <!-- COMPLEMENTO DO PACOTE (OPCIONAL) -->
+                        <!-- SELEÇÃO DE MATÉRIAS (VISÍVEL APENAS PARA REFORÇO) -->
+                        <div class="col-md-12 mt-3" id="area_materias" style="display: none;">
+                            <label class="form-label fw-bold">Matérias de Reforço Selecionadas:</label>
+                            <div class="row g-2">
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Matemática" id="mat_mat">
+                                        <label class="form-check-label" for="mat_mat">Matemática</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Português" id="mat_portugues">
+                                        <label class="form-check-label" for="mat_portugues">Português</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Redação" id="mat_red">
+                                        <label class="form-check-label" for="mat_red">Redação</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Física" id="mat_fis">
+                                        <label class="form-check-label" for="mat_fis">Física</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Química" id="mat_qui">
+                                        <label class="form-check-label" for="mat_qui">Química</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Biologia" id="mat_bio">
+                                        <label class="form-check-label" for="mat_bio">Biologia</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Ciências" id="mat_cie">
+                                        <label class="form-check-label" for="mat_cie">Ciências</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="História" id="mat_his">
+                                        <label class="form-check-label" for="mat_his">História</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Geografia" id="mat_geo">
+                                        <label class="form-check-label" for="mat_geo">Geografia</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input check-materia" type="checkbox" name="materias" value="Inglês" id="mat_ing">
+                                        <label class="form-check-label" for="mat_ing">Inglês</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COMPLEMENTO DO PACOTE / OBSERVAÇÃO -->
                         <div class="col-md-6">
                             <label class="form-label">Complemento / Desconto (Opcional):</label>
                             <input type="text" id="complemento_pacote" class="form-control" placeholder="ex: com desconto para aluno IESE" oninput="atualizarPagamento()">
                         </div>
 
                         <!-- Forma de Pagamento -->
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Tipo de Pagamento:</label>
                             <select id="tipo_pagamento" class="form-select" onchange="atualizarPagamento()">
                                 <option value="credito">Cartão de Crédito</option>
@@ -132,7 +208,7 @@
                         </div>
 
                         <!-- Número de Parcelas -->
-                        <div class="col-md-4" id="div_select_parcelas">
+                        <div class="col-md-6" id="div_select_parcelas">
                             <label class="form-label">Quantidade de Parcelas:</label>
                             <select id="qtd_parcelas_select" class="form-select" onchange="atualizarPagamento()">
                                 <option value="12">12x (doze vezes)</option>
@@ -150,7 +226,7 @@
                         </div>
 
                         <!-- Isenção de Matrícula -->
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Isenção da Taxa de Matrícula?</label>
                             <select id="isencao_select" class="form-select" onchange="atualizarPagamento()">
                                 <option value="sim">Sim (com isenção da taxa de matrícula)</option>
@@ -159,7 +235,7 @@
                         </div>
 
                         <!-- Valor Total -->
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label">Valor Total do Curso (R$):</label>
                             <input type="text" id="valor_total_input" name="valor_total" class="form-control" placeholder="2.256,00" oninput="atualizarPagamento()" required>
                         </div>
@@ -169,8 +245,9 @@
                         <input type="hidden" id="forma_pagamento_hidden" name="forma_pagamento">
                         <input type="hidden" id="detalhe_isencao_hidden" name="detalhe_isencao">
                         <input type="hidden" id="num_parcelas_hidden" name="num_parcelas">
+                        <input type="hidden" id="dia_vencimento_hidden" name="dia_vencimento" value="10">
 
-                        <!-- Campos formatados em BR que serão enviados ao Python -->
+                        <!-- Campos formatados em BR enviados ao Python -->
                         <input type="hidden" id="data_primeira_parcela_hidden" name="data_primeira_parcela">
                         <input type="hidden" id="data_ultima_parcela_hidden" name="data_ultima_parcela">
 
@@ -246,7 +323,7 @@
         </div>
     </div>
 
-    <!-- MÁSCARAS E LÓGICA DE INTEGRAÇÃO EM JAVASCRIPT -->
+    <!-- MÁSCARAS E LÓGICA EM JAVASCRIPT -->
     <script>
         const meses = [
             "janeiro", "fevereiro", "março", "abril", "maio", "junho",
@@ -259,7 +336,22 @@
             9: "9 (nove)", 10: "10 (dez)", 11: "11 (onze)", 12: "12 (doze)"
         };
 
-        // MÁSCARAS DE TEXTO
+        function alternarTipoCurso() {
+            const tipoCurso = document.getElementById('tipo_curso_select').value;
+            const areaPacotes = document.getElementById('area_pacotes');
+            const areaMaterias = document.getElementById('area_materias');
+
+            if (tipoCurso === 'reforco') {
+                areaPacotes.style.display = 'none';
+                areaMaterias.style.display = 'block';
+            } else {
+                areaPacotes.style.display = 'block';
+                areaMaterias.style.display = 'none';
+                document.querySelectorAll('.check-materia').forEach(cb => cb.checked = false);
+            }
+            atualizarPagamento();
+        }
+
         function mascaraCPF(input) {
             let v = input.value.replace(/\D/g, "");
             v = v.replace(/(\d{3})(\d)/, "$1.$2");
@@ -274,7 +366,6 @@
             input.value = v;
         }
 
-        // AUXILIARES DE DATA
         function isoParaBR(dataISO) {
             if (!dataISO) return '-';
             let partes = dataISO.split('-');
@@ -291,7 +382,6 @@
             return `${ano}-${mes}-${dia}`;
         }
 
-        // CONVERTE DATAS DE NASCIMENTO PARA DD/MM/AAAA
         function atualizarDatasNascimentoBR() {
             let dtContratante = document.getElementById('nascimento_contratante_picker').value;
             let dtAluno = document.getElementById('nascimento_aluno_picker').value;
@@ -300,7 +390,6 @@
             document.getElementById('nascimento_aluno_hidden').value = isoParaBR(dtAluno);
         }
 
-        // VIGÊNCIA PADRÃO (12 MESES)
         function calcularVigenciaFimPadrao() {
             const mesInicioNome = document.getElementById('mes_inicio').value;
             const anoInicioVal = parseInt(document.getElementById('ano_inicio').value);
@@ -317,7 +406,6 @@
             }
         }
 
-        // RECALCULAR PARCELAS E VIGÊNCIA
         function recalcularParcelasEVigencia() {
             let valPrimeira = document.getElementById('data_primeira_parcela').value;
             let qtdParcelas = parseInt(document.getElementById('qtd_parcelas_select').value);
@@ -326,21 +414,21 @@
                 let partes = valPrimeira.split('-');
                 let dtPrimeira = new Date(partes[0], partes[1] - 1, partes[2]);
 
-                // Calcula última parcela: + (qtdParcelas - 1) meses
+                // EXTRAI O DIA DE VENCIMENTO AUTOMATICAMENTE DA PRIMEIRA PARCELA
+                let diaVencimento = String(dtPrimeira.getDate()).padStart(2, '0');
+                document.getElementById('dia_vencimento_hidden').value = diaVencimento;
+
                 let dtUltima = new Date(dtPrimeira.getFullYear(), dtPrimeira.getMonth() + (qtdParcelas - 1), dtPrimeira.getDate());
                 
                 let isoUltima = dateParaISO(dtUltima);
                 document.getElementById('data_ultima_parcela').value = isoUltima;
 
-                // Atualiza os Hiddens em formato DD/MM/AAAA para envio ao Python
                 document.getElementById('data_primeira_parcela_hidden').value = isoParaBR(valPrimeira);
                 document.getElementById('data_ultima_parcela_hidden').value = isoParaBR(isoUltima);
 
-                // Sincroniza Vigência Início
                 document.getElementById('mes_inicio').value = meses[dtPrimeira.getMonth()];
                 document.getElementById('ano_inicio').value = dtPrimeira.getFullYear();
 
-                // Se for 12x, sincroniza a Vigência Fim com a Última Parcela
                 if (qtdParcelas === 12) {
                     document.getElementById('mes_fim').value = meses[dtUltima.getMonth()];
                     document.getElementById('ano_fim').value = dtUltima.getFullYear();
@@ -356,12 +444,18 @@
         }
 
         function atualizarPagamento() {
-            // 1. Pacote
-            const pacoteBase = document.getElementById('pacote_select').value;
+            const tipoCurso = document.getElementById('tipo_curso_select').value;
             const complemento = document.getElementById('complemento_pacote').value.trim();
-            document.getElementById('descricao_pacote_hidden').value = complemento !== "" ? `${pacoteBase} ${complemento}` : pacoteBase;
+            
+            let pacoteBase = "";
+            if (tipoCurso === 'reforco') {
+                pacoteBase = "Reforço Escolar";
+            } else {
+                pacoteBase = document.getElementById('pacote_select').value;
+            }
 
-            // 2. Pagamento
+            document.getElementById('descricao_pacote_hidden').value = complemento !== "" ? `${pacoteBase} (${complemento})` : pacoteBase;
+
             const tipo = document.getElementById('tipo_pagamento').value;
             const isencao = document.getElementById('isencao_select').value;
             const valorTotalStr = document.getElementById('valor_total_input').value;
@@ -397,7 +491,6 @@
                 document.getElementById('forma_pagamento_hidden').value = `parcelado em ${textoQtdExtenso} vezes no boleto bancário`;
             }
 
-            // Define data padrão de hoje se estiver limpo
             let campoPrimeira = document.getElementById('data_primeira_parcela');
             if (!campoPrimeira.value) {
                 campoPrimeira.value = dateParaISO(new Date());
@@ -417,7 +510,7 @@
         }
 
         window.onload = function() {
-            atualizarPagamento();
+            alternarTipoCurso();
             atualizarDatasNascimentoBR();
         };
     </script>
